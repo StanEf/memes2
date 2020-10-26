@@ -14,5 +14,6 @@ describe Meme::Api::GetTemplates do
   it 'отрабатывает успешно' do
     expect(subject).to be_truthy
     expect(existed_images_in_local_aws).to be_truthy
+    delete_existed_images_in_local_aws
   end
 end

@@ -24,4 +24,13 @@ shared_context(:imgflip_get_memes) do
 
     result
   end
+
+  let(:delete_existed_images_in_local_aws) do
+    imgflip_get_memes.each do |meme|
+      rubys3_client.delete_object(
+          bucket: ENV['MINIO_BUCKET'],
+          key: meme['name']
+      )
+    end
+  end
 end

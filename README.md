@@ -1,24 +1,12 @@
-# README
+# Cервис с REST API, позволяющий сохранять изображения с мета-информацией в хранилище файлов и собственной БД
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+В сервисе ведется список шаблонов и сгенерированных изображений в контексте
+залогиненного пользователя. Сервис имеет REST интерфейс.
+Основная функциональность сервиса состоит в получении, генерации
+(через стыковку с другим сервисом) и хранении изображений по шаблонам из внешней
+системы в контексте пользователя. Получение шаблонов через внешний API.
+Документация на внешний API: https://imgflip.com/api. 
 
-Things you may want to cover:
+Реализованные методы:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Meme::Api::GetTemplates - получение списка сохраненных мемов

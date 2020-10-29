@@ -57,7 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Add the aws sdk gem
 gem 'aws-sdk', '~> 3'
-
+gem "figaro"
 
 ENV["MINIO_BUCKET"] =
     ENV["RAILS_ENV"] == 'development' ? 'memes-development' : 'memes-test'

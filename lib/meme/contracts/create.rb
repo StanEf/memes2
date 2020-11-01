@@ -117,31 +117,39 @@ module Meme
       end
 
       rule(:template, :boxes) do
-        # валидация красивая, но очень долгая
         if key(:boxes)
-          template_map = {}
-          (1..values[:template][:width]).each do |pixel_width|
-            template_map[pixel_width] = {}
-            (1..values[:template][:height]).each do |pixel_height|
-              template_map[pixel_width][pixel_height] = 0
+          template_x_range = Range.new(0, values[:template][:width])
+          template_y_range = Range.new(0, values[:template][:height])
+          boxes_ranges = []
+          values[:boxes]&.each do |box|
+            box_ranges = {}
+            box_ranges[:x_range] = Range.new(box[:x], (box[:x] + box[:width]))
+            box_ranges[:y_range] = Range.new(box[:y], (box[:y] + box[:height]))
+            boxes_ranges.push(box_ranges)
+          end
+
+          boxes_ranges&.each do |box_ranges1|
+            boxes_ranges&.each do |box_ranges2|
+              if box_ranges1 != box_ranges2 &&
+                 box_ranges1[:y_range].intersection(box_ranges2[:y_range]).count.positive? &&
+                 box_ranges1[:x_range].intersection(box_ranges2[:x_range]).count.positive?
+                base.failure('boxes cant intersected')
+              end
             end
           end
 
-          values[:boxes]&.each do |box|
-            (box[:x]..(box[:x] + box[:width])).each do |x|
-              (box[:y]..(box[:y] + box[:height])).each do |y|
-                if !template_map[x] || !template_map[x][y]
-                  base.failure('boxes must be inside template')
-                elsif template_map[x][y] == 1
-                  base.failure('boxes cant intersected')
-                else
-                  template_map[x][y] = 1
-                end
-              end
+          boxes_ranges&.each do |box_ranges|
+            if template_x_range.intersection(box_ranges[:x_range]) != box_ranges[:x_range]
+              base.failure('boxes must be inside template by width')
+            end
+
+            if template_y_range.intersection(box_ranges[:y_range]) != box_ranges[:y_range]
+              base.failure('boxes must be inside template by height')
             end
           end
         end
       end
+
       # color != outline_color
       # текст с заданым шрифтом и размером шрифта должен влезать в бокс
     end

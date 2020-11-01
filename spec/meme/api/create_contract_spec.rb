@@ -90,7 +90,7 @@ describe 'Meme::Api::Create.contract' do
     end
   end
 
-  context 'boxes must be inside template' do
+  context 'boxes must be inside template by width' do
     let(:boxes) do
       [
         {
@@ -106,7 +106,27 @@ describe 'Meme::Api::Create.contract' do
     end
     it do
       expect(subject.errors.to_h[nil])
-        .to include('boxes must be inside template')
+        .to include('boxes must be inside template by width')
+    end
+  end
+
+  context 'boxes must be inside template by height' do
+    let(:boxes) do
+      [
+        {
+          text: 'lol',
+          x: 100,
+          y: 100,
+          width: 280,
+          height: 500,
+          color: '#fff',
+          outline_color: '#ccc'
+        }
+      ]
+    end
+    it do
+      expect(subject.errors.to_h[nil])
+        .to include('boxes must be inside template by height')
     end
   end
 
@@ -133,6 +153,7 @@ describe 'Meme::Api::Create.contract' do
         }
       ]
     end
+
     it do
       expect(subject.errors.to_h[nil])
         .to include('boxes cant intersected')
